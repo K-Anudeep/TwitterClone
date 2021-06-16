@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -94,6 +93,27 @@ namespace TwitterClone.Controllers
                 return RedirectToAction("Profile");
             }
             return View(users);
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Search(string searchName)
+        {
+            var users = _context.Person
+                .SingleOrDefault(m => m.FullName == searchName);
+            if (users != null)
+            {
+                return View(users);
+            }
+            else
+            {
+                ViewBag.SearchFail = "No user with that name found.";
+                return View("Index");
+            }
         }
 
         public IActionResult Privacy()

@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Microsoft.AspNetCore.Http;
 
@@ -7,7 +8,39 @@
 {
     <div class="text-center">
         <h1 class="display-4">Welcome, @Context.Session.GetString("FullName")!</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="text-left">
+                <h4>Follow</h4>
+                <form asp-action="Search">
+                    <div class="input-group mb-3">
+                        <input type="text" name="searchName" class="form-control" placeholder="Search User" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <span class="text-danger">@ViewBag.SearchFail</span>
+            </div>
+            <div>
+                <br />
+                <br />
+                Tweets : 1<br />
+                Following: 2<br />
+                Followers: 4
+            </div>
+        </div>
+        <div class=border></div>
+        <div class="col-4">
+            <h4>Tweet your thoughts!</h4>
+            <form asp-action="Tweet">
+                <textarea rows="5" cols="100" name="message" class="form-control"> </textarea>
+                <br />
+                <input type="submit" value="Tweet" class="btn btn-primary"/>
+            </form>
+        </div>
     </div>
 }
 else
