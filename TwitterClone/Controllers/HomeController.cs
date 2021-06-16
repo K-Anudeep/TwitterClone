@@ -33,7 +33,7 @@ namespace TwitterClone.Controllers
 
 
         //POST: Home/UserLogin
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserLogin(Person userLogin)
         {
@@ -62,7 +62,7 @@ namespace TwitterClone.Controllers
         }
 
         // POST: Home/Signup
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Signup([Bind("UserID, Password, FullName, Email, Joined")] Person person)
         {
