@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+@using Microsoft.AspNetCore.Http;
+
+@if (Context.Session.GetString("FullName") != null)
+{
+    <h1 > @ViewData["Title"]</h1>
+    <p>Use this page to detail your site's privacy policy.</p>
+}
+else
+{
+<h2>You are not Authorized!</h2>
+<script type="text/javascript">
+    window.setTimeout(function () {
+        window.location.href = '/Home/UserLogin';
+    }, 1000);
+</script>
+}

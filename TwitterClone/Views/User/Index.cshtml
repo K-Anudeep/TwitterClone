@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Http;
+
+@if (Context.Session.GetString("FullName") != null)
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome, @Context.Session.GetString("FullName")!</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+}
+else
+{
+    <h2>You are not Authorized!</h2>
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            window.location.href = '/Home/UserLogin';
+        }, 1000);
+    </script>
+}
