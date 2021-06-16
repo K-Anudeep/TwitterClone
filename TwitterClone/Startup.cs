@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwitterClone.DataContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone
 {
@@ -23,6 +25,9 @@ namespace TwitterClone
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession();
+            services.AddDbContext<TwitterCloneDBContext>(options =>
+                              options.UseSqlServer(Configuration.GetConnectionString("TwitterCloneDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +43,8 @@ namespace TwitterClone
             }
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -46,7 +53,7 @@ namespace TwitterClone
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=UserLogin}/{id?}");
             });
         }
     }
