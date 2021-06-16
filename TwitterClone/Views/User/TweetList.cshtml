@@ -1,34 +1,37 @@
 ﻿@model List<TwitterClone.Models.Tweet>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model[0].User_ID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].Created)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (@Model != null && Model.Count > 0)
+{ 
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User_ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Message)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].User_ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Message)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Created)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
