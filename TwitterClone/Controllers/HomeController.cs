@@ -26,7 +26,7 @@ namespace TwitterClone.Controllers
         }
 
         //GET: Home/UserLogin
-        public IActionResult UserLogin()
+        public ActionResult UserLogin()
         {
             return View();
         }
@@ -35,7 +35,7 @@ namespace TwitterClone.Controllers
         //POST: Home/UserLogin
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UserLogin(Person userLogin)
+        public ActionResult UserLogin(Person userLogin)
         {
             var login = _context.Person.Where(a => a.UserID.Equals(userLogin.UserID)
                                               && a.Password.Equals(userLogin.Password)).FirstOrDefault();
@@ -51,12 +51,12 @@ namespace TwitterClone.Controllers
             else
             {
                 ViewBag.ErrMsg = "Invalid Credentials";
-                return View(userLogin);
+                return View();
             }           
         }
 
         // GET: Home/Signup
-        public IActionResult Signup()
+        public ActionResult Signup()
         {
             return View();
         }
@@ -78,7 +78,7 @@ namespace TwitterClone.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public ActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

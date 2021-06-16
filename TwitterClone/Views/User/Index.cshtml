@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Microsoft.AspNetCore.Http;
+@model List<TwitterClone.Models.Tweet>
 
 @if (Context.Session.GetString("FullName") != null)
 {
@@ -25,11 +26,11 @@
                 <span class="text-danger">@ViewBag.SearchFail</span>
             </div>
             <div>
+                <h6>@ViewBag.Tweets Tweets</h6>
                 <br />
+                <h6>@ViewBag.Followers Followers</h6>
                 <br />
-                Tweets : 1<br />
-                Following: 2<br />
-                Followers: 4
+                <h6>@ViewBag.Following Following</h6>
             </div>
         </div>
         <div class=border></div>
@@ -38,8 +39,12 @@
             <form asp-action="Tweet">
                 <textarea rows="5" cols="100" name="message" class="form-control"> </textarea>
                 <br />
-                <input type="submit" value="Tweet" class="btn btn-primary"/>
+                <input type="submit" value="Tweet" class="btn btn-primary" />
             </form>
+            <span class=" text-danger">@ViewBag.ErrMessage</span>
+            <div>
+                <partial name="TweetList" />
+            </div>
         </div>
     </div>
 }

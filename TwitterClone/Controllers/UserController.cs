@@ -10,31 +10,45 @@ using TwitterClone.DataContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TwitterClone.Models.Repository;
 
 namespace TwitterClone.Controllers
 {
     public class UserController : Controller
     {
+        private readonly Twitter _twitter = null;
         private readonly TwitterCloneDBContext _context;
-
         public UserController(TwitterCloneDBContext context)
         {
+            _twitter = new Twitter(context);
             _context = context;
-
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
+            List<Tweet> tweets = _twitter.TweetList();
+            ViewBag.Tweets = tweets.Count;
+            ViewBag.Followers = 2;
+            ViewBag.Following = 3;
             return View();
         }
 
+        public PartialViewResult TweetList()
+        {
+            List<Tweet> tweetList = _twitter.TweetList();
+            return PartialView("TweetList",tweetList);
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
         public ActionResult Logout()
         {
             Person session = _context.Person.SingleOrDefault(u => u.UserID == HttpContext.Session.GetString("UserID"));
             session.Active = 0;
-            _context.Update(session);
-            _context.SaveChanges();
+            _twitter.Logout(session);
             HttpContext.Session.Clear();
             return View();
         }
@@ -95,6 +109,23 @@ namespace TwitterClone.Controllers
             return View(users);
         }
 
+        public async Task<IActionResult> Tweet(string message)
+        {
+            if (!String.IsNullOrEmpty(message))
+            {
+                ViewBag.Uname = HttpContext.Session.GetString("UserID");
+                Tweet tweet = new() { User_ID = ViewBag.Uname, Message = message, Created = DateTime.Now };
+                _context.Add(tweet);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "User");
+            }
+            else
+            {
+                ViewBag.ErrMessage = "Message is Empty";
+                return RedirectToAction("Index", "User");
+            }
+        }
+
         public ActionResult Search()
         {
             return View();
@@ -114,11 +145,6 @@ namespace TwitterClone.Controllers
                 ViewBag.SearchFail = "No user with that name found.";
                 return View("Index");
             }
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
     }
 }
