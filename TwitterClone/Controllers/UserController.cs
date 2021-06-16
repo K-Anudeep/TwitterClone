@@ -26,11 +26,15 @@ namespace TwitterClone.Controllers
 
         public ActionResult Index()
         {
-            List<Tweet> tweets = _twitter.TweetList();
-            ViewBag.Tweets = tweets.Count;
-            ViewBag.Followers = 2;
-            ViewBag.Following = 3;
-            return View();
+            if (HttpContext.Session.GetString("FullName") != null)
+            {
+                List<Tweet> tweets = _twitter.TweetList();
+                ViewBag.Tweets = tweets.Count;
+                ViewBag.Followers = 2;
+                ViewBag.Following = 3;
+                return View("Index", tweets);
+            }
+            return RedirectToAction("UserLogin", "Home");
         }
 
         public PartialViewResult TweetList()
