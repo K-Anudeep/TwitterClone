@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TwitterClone.Models;
 using TwitterClone.DataContext;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TwitterClone.Models.Repository;
 
@@ -16,7 +13,7 @@ namespace TwitterClone.Controllers
 {
     public class UserController : Controller
     {
-        private readonly Twitter _twitter = null;
+        private readonly Twitter _twitter;
         private readonly TwitterCloneDBContext _context;
         public UserController(TwitterCloneDBContext context)
         {
@@ -50,9 +47,14 @@ namespace TwitterClone.Controllers
 
         public ActionResult Logout()
         {
-            Person session = _context.Person.SingleOrDefault(u => u.UserID == HttpContext.Session.GetString("UserID"));
-            session.Active = 0;
-            _twitter.Logout(session);
+            var session = _context.Person
+                .SingleOrDefault(u => u.UserID == HttpContext.Session.GetString("UserID"));
+            if (session != null)
+            {
+                session.Active = 0;
+                _twitter.Logout(session);
+            }
+
             HttpContext.Session.Clear();
             return View();
         }
@@ -84,9 +86,10 @@ namespace TwitterClone.Controllers
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserID, Password, FullName, Email")] Person users)
+        public async Task<IActionResult> Edit(string id, [Bind("UserID, Password, FullName, Email")] 
+            Person users)
         {
 
             if (ModelState.IsValid)
